@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import org.team3467.robot2019.robot.RobotGlobal;
 //import org.team3467.robot2019.subsystems.Drivetrain.DriveBot;
@@ -15,8 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drivetrain extends Subsystem {
 
 	// Motor controller objects and RobotDrive object
-	private final WPI_TalonSRX left_talon, right_talon;
-	private final WPI_VictorSPX left_victor_1, left_victor_2, right_victor_1, right_victor_2;
+	private final TalonFX rightMotor1, rightMotor2, leftMotor1, leftMotor2;
 	
 	private final DifferentialDrive m_drive;
 	private ControlMode 			m_talonControlMode;
@@ -35,8 +35,8 @@ public class Drivetrain extends Subsystem {
 		super();
 
 		// Three motors per side -> three speed controllers per side
-        left_victor_1 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_L1);
-        left_victor_2 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_L2);
+        left_victor_1 = new TalonFX(RobotGlobal.DRIVEBASE_VICTOR_L1);
+        left_victor_2 = new TalonFX(RobotGlobal.DRIVEBASE_VICTOR_L2);
         left_talon = new WPI_TalonSRX(RobotGlobal.DRIVEBASE_TALON_L);
         right_victor_1 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_R1);
         right_victor_2 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_R2);
