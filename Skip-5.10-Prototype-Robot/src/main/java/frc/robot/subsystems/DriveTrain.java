@@ -1,17 +1,13 @@
-/*
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import org.team3467.robot2019.robot.RobotGlobal;
-//import org.team3467.robot2019.subsystems.Drivetrain.DriveBot;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotMap;
+import frc.robot.Command.DriveBot;
 
 public class Drivetrain extends Subsystem {
 
@@ -35,38 +31,27 @@ public class Drivetrain extends Subsystem {
 		super();
 
 		// Three motors per side -> three speed controllers per side
-        left_victor_1 = new TalonFX(RobotGlobal.DRIVEBASE_VICTOR_L1);
-        left_victor_2 = new TalonFX(RobotGlobal.DRIVEBASE_VICTOR_L2);
-        left_talon = new WPI_TalonSRX(RobotGlobal.DRIVEBASE_TALON_L);
-        right_victor_1 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_R1);
-        right_victor_2 = new WPI_VictorSPX(RobotGlobal.DRIVEBASE_VICTOR_R2);
-        right_talon = new WPI_TalonSRX(RobotGlobal.DRIVEBASE_TALON_R);
+        leftMotor1 = new TalonFX(RobotMap.portRightMotor1);
+        leftMotor2 = new TalonFX(RobotMap.portRightMotor2);
+        rightMotor1 = new TalonFX(RobotMap.portLeftMotor1);
+        rightMotor2 = new TalonFX(RobotMap.portLeftMotor2);
 
         
-        left_victor_1.configFactoryDefault();
-        left_victor_2.configFactoryDefault();
-        left_talon.configFactoryDefault();
-        right_victor_1.configFactoryDefault();
-        right_victor_2.configFactoryDefault();
-        right_talon.configFactoryDefault();
+        leftMotor1.configFactoryDefault();
+        leftMotor2.configFactoryDefault();
+        rightMotor1.configFactoryDefault();
+        rightMotor2.configFactoryDefault();
 
 		// Slave the extra Talons on each side
-        left_victor_1.follow(left_talon);
-        left_victor_2.follow(left_talon);
-        right_victor_1.follow(right_talon);
-        right_victor_2.follow(right_talon);
-		
-		// Flip any sensors?
-		left_talon.setSensorPhase(true);
+        leftMotor2.follow(leftMotor1);
+        rightMotor1.follow(rightMotor2);
 		
 		// Invert all motors? (invert for driving backward)
 		boolean _inverted = false; 
-		left_talon.setInverted(_inverted);
-		left_victor_1.setInverted(_inverted);
-		left_victor_2.setInverted(_inverted);
-		right_talon.setInverted(_inverted);
-		right_victor_1.setInverted(_inverted);
-		right_victor_2.setInverted(_inverted);
+		leftMotor1.setInverted(_inverted);
+		leftMotor2.setInverted(_inverted);
+		rightMotor1.setInverted(_inverted);
+		rightMotor2.setInverted(_inverted);
 
 		// Turn off Brake mode
 		setTalonBrakes(false);
@@ -75,11 +60,11 @@ public class Drivetrain extends Subsystem {
 		setControlMode(ControlMode.PercentOutput);
 		
  		// Set encoders as feedback device
-		left_talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
-		right_talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		rightMotor2.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		
 		// Instantiate DifferentialDrive
-		m_drive = new DifferentialDrive(left_talon, right_talon);
+		m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 		
         // DifferentialDrive Parameters
         m_drive.setDeadband(0.0); // we will add our own deadband as needed
@@ -96,18 +81,18 @@ public class Drivetrain extends Subsystem {
 	
     }
     
-	public WPI_TalonSRX getLeftTalon() {
-		return left_talon;
+	public TalonFX getLeftTalon() {
+		return leftMotor1;
 	}
 	
-	public WPI_TalonSRX getRightTalon() {
-		return right_talon;
+	public TalonFX getRightTalon() {
+		return rightMotor1;
 	}
 	
     
 	//Use standard Tank Drive method
-	public void driveTank (double leftSpeed, double rightSpeed) {
-		m_drive.tankDrive(leftSpeed, rightSpeed, false);
+	public void driveTank (double leftMotor1, double rightMotor1) {
+		m_drive.tankDrive(leftMotor1, rightMotor1, false);
 	}
 
 	// Use single-stick Arcade Drive method
@@ -122,18 +107,18 @@ public class Drivetrain extends Subsystem {
 
 	/**
 	 * @param controlMode Set the control mode of the left and
-	 * right master WPI_TalonSRXs
+	 * right master TalonFXs
 	 
 	public void setControlMode(ControlMode controlMode) {
-		left_talon.set(controlMode, 0.0);
-		right_talon.set(controlMode, 0.0);
+		leftMotor2.set(controlMode, 0.0);
+		rightMotor1.set(controlMode, 0.0);
 		
 		// Save control mode so we will know if we have to set it back later
 		m_talonControlMode = controlMode;
 	}
 	
 	/**
-	 * @return The current WPI_TalonSRX control mode
+	 * @return The current TalonFXs control mode
 	 
 	public String getTalonControlMode() {
 		if (m_talonControlMode == ControlMode.PercentOutput) {
@@ -170,34 +155,13 @@ public class Drivetrain extends Subsystem {
 
 		NeutralMode nm = setBrake ? NeutralMode.Brake : NeutralMode.Coast;
 		
-		left_talon.setNeutralMode(nm);
-		left_victor_1.setNeutralMode(nm);
-		left_victor_2.setNeutralMode(nm);
-		right_talon.setNeutralMode(nm);
-		right_victor_1.setNeutralMode(nm);
-		right_victor_2.setNeutralMode(nm);
+		rightMotor1.setNeutralMode(nm);
+		rightMotor2.setNeutralMode(nm);
+		rightMotor1.setNeutralMode(nm);
+		rightMotor2.setNeutralMode(nm);
+	
 		
 		SmartDashboard.putBoolean("Talon Brakes", setBrake);
 	}
-	
-	
- 	// @return Average of the encoder values from the left and right encoders
-	public double getDistance() {
-		return (left_talon.getSelectedSensorPosition(0) + 
-//				(right_talon.getSelectedSensorPosition(0) * -1.0))/2;
-				right_talon.getSelectedSensorPosition(0) ) / 2;
-	}
-
-	public void reportEncoders() {
-		SmartDashboard.putNumber("Left Encoder", left_talon.getSelectedSensorPosition(0));
-//		SmartDashboard.putNumber("Right Encoder", right_talon.getSelectedSensorPosition(0) * -1.0);			
-		SmartDashboard.putNumber("Right Encoder", right_talon.getSelectedSensorPosition(0));			
-	}
-
-	public void resetEncoders() {
-		left_talon.setSelectedSensorPosition(0, 0, 0);
-		right_talon.setSelectedSensorPosition(0, 0, 0);
-	}
 
 }
-*/

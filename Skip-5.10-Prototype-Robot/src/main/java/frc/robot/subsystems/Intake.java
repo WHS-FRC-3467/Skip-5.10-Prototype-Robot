@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.Command.ShootBall;
+import frc.robot.Command.runIntake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -17,21 +17,16 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 /**
  * An example subsystem. You can replace with me with your own subsystem.
  */
-public class CD7 extends Subsystem {
-  private TalonSRX sideMotor = new TalonSRX(RobotMap.portSideMotor);
-  private TalonSRX beltMotor1 = new TalonSRX(RobotMap.portBeltMotor1);
-  private TalonSRX beltMotor2 = new TalonSRX(RobotMap.portBeltMotor2);
+public class Intake extends Subsystem {
+  private TalonSRX intakeMotor = new TalonSRX(RobotMap.portIntakeMotor);
 
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new ShootBall());
+    setDefaultCommand(new runIntake());
   }
-  
-  public void setSideMotor (double speed){
-    sideMotor.set(ControlMode.PercentOutput, speed);
-  }
-  public void setBeltMotor (double speed){
-    beltMotor1.set(ControlMode.PercentOutput, speed);
-    beltMotor2.set(ControlMode.PercentOutput, speed);
+
+  public void setIntakeRoller (double speed)
+  {
+    intakeMotor.set(ControlMode.PercentOutput, speed);
   }
 }

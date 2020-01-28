@@ -11,20 +11,24 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class runIntake extends Command {
-    private double rollerVelocity;
+public class runCD7 extends Command {
+    private double sideVelocity, beltVelocity;
 
 
-  public runIntake() {
+  public runCD7() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.intake);
+    requires(Robot.CD7);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {  
-    SmartDashboard.putNumber("Roller Velocity", rollerVelocity);
+
+    
+    SmartDashboard.putNumber("Side Velocity", sideVelocity);
+    SmartDashboard.putNumber("Belt velocity", beltVelocity);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -32,10 +36,12 @@ public class runIntake extends Command {
   protected void execute() {
       
     //get velocity from SmartDashboard
-    double m_rollerVelocity = SmartDashboard.getNumber("Roller Velocity", 0);
+    double m_sideVelocity = SmartDashboard.getNumber("Side Velocity", 0);
+    double m_beltVelocity = SmartDashboard.getNumber("Belt velocity", 0);
     // if velocity coefficients on SmartDashboard have changed, write new values to controller
     
-    Robot.intake.setIntakeRoller(m_rollerVelocity);
+    Robot.CD7.setSideMotor(m_sideVelocity);
+    Robot.CD7.setBeltMotor(m_beltVelocity);
   }
 
   // Make this return true when this Command no longer needs to run execute()
