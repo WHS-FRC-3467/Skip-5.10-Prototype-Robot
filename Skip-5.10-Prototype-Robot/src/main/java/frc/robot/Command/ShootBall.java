@@ -14,7 +14,6 @@ import frc.robot.Robot;
 public class ShootBall extends Command {
     private double velocity, intakeVelocity;
 
-
   public ShootBall() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -40,6 +39,14 @@ public class ShootBall extends Command {
     double m_intakeVelocity = SmartDashboard.getNumber("Velocity", 0);
     // if velocity coefficients on SmartDashboard have changed, write new values to controller
     
+    /*
+    private final double distFactor = 0.1
+    private final double speedFactor = 0.1
+
+    distance = limelight.getTa() * distFactor
+    m_velocity = distance * speedFactor
+    */ 
+
     Robot.shooter.setShooterMotors(m_velocity);
     Robot.shooter.setIntake(m_intakeVelocity);
   }

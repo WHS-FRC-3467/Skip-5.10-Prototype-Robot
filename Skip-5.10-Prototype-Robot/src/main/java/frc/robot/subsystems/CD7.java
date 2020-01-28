@@ -19,7 +19,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class CD7 extends Subsystem {
   private TalonSRX sideMotor = new TalonSRX(RobotMap.portSideMotor);
-  private TalonSRX beltMotor = new TalonSRX(RobotMap.portBeltMotor);
+  private TalonSRX beltMotor1 = new TalonSRX(RobotMap.portBeltMotor1);
+  private TalonSRX beltMotor2 = new TalonSRX(RobotMap.portBeltMotor2);
 
   @Override
   protected void initDefaultCommand() {
@@ -30,7 +31,9 @@ public class CD7 extends Subsystem {
     sideMotor.set(ControlMode.PercentOutput, speed);
   }
   public void setBeltMotor (double speed){
-    beltMotor.set(ControlMode.PercentOutput, speed);
+    beltMotor1.set(ControlMode.PercentOutput, speed);
+    beltMotor2.set(ControlMode.PercentOutput, speed);
+
 
   }
 }
