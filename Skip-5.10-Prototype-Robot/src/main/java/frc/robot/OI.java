@@ -7,15 +7,50 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  public Joystick driverController = new Joystick(0);
-  
+  public static XboxController driverController = new XboxController(0);
+
+
+//
+// Easier access to XBox controllers
+//
+public static XboxController getDriverController()
+{
+    return driverController;
+}
+
+
+public static double getDriverLeftX()
+{
+    return driverController.getX(Hand.kLeft);
+}
+
+public static double getDriverLeftY()
+{
+    return driverController.getY(Hand.kLeft);
+}
+
+public static double getDriverRightY()
+{
+    return driverController.getY(Hand.kRight);
+}
+
+public static double getDriverLeftTrigger()
+{
+    return driverController.getTriggerAxis(Hand.kRight);
+}
+
+public static double getDriverRightTrigger()
+{
+    return driverController.getTriggerAxis(Hand.kLeft);
+}
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

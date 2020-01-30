@@ -1,13 +1,18 @@
+package frc.robot.subsystems;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.RobotMap;
 import frc.robot.Command.DriveBot;
+
 
 public class Drivetrain extends Subsystem {
 
@@ -16,7 +21,6 @@ public class Drivetrain extends Subsystem {
 	
 	private final DifferentialDrive m_drive;
 	private ControlMode 			m_talonControlMode;
-	private int						m_driveMode;
 
 	// Static subsystem reference
 	private static Drivetrain dTInstance = new Drivetrain();
@@ -26,7 +30,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	//Drivetrain class constructor
-	protected Drivetrain() {
+	public Drivetrain() {
 
 		super();
 
@@ -57,7 +61,6 @@ public class Drivetrain extends Subsystem {
 		setTalonBrakes(false);
 		
 		// Set default control Modes for Master Talons
-		setControlMode(ControlMode.PercentOutput);
 		
  		// Set encoders as feedback device
 		leftMotor1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
@@ -73,7 +76,6 @@ public class Drivetrain extends Subsystem {
 		m_drive.setMaxOutput(1.0);
 
 	}
-	
     protected void initDefaultCommand() {
 	
 		// Set the default command for a subsystem here.
@@ -81,6 +83,7 @@ public class Drivetrain extends Subsystem {
 	
     }
     
+
 	public TalonFX getLeftTalon() {
 		return leftMotor1;
 	}
@@ -90,78 +93,51 @@ public class Drivetrain extends Subsystem {
 	}
 	
     
-	//Use standard Tank Drive method
-	public void driveTank (double leftMotor1, double rightMotor1) {
-		m_drive.tankDrive(leftMotor1, rightMotor1, false);
-	}
+    // Use standard Tank Drive method
+    public void driveTank(double leftSpeed, double rightSpeed)
+    {
+        m_drive.tankDrive(leftSpeed, rightSpeed, false);
+    }
 
-	// Use single-stick Arcade Drive method
-	public void driveArcade(double move, double rotate) {
-		m_drive.arcadeDrive(move, rotate, false);
-	}
+    // Use single-stick Arcade Drive method
+    public void driveArcade(double move, double rotate)
+    {
+        m_drive.arcadeDrive(move, rotate, false);
+    }
 
-	// Use DifferentialDrive curvatureDrive() method
-	public void drive(double outputMagnitude, double curve, boolean spin) {
-		m_drive.curvatureDrive(outputMagnitude, curve, spin);
-	}
+    // Use DifferentialDrive curvatureDrive() method
+    public void drive(double outputMagnitude, double curve, boolean spin)
+    {
+        m_drive.curvatureDrive(outputMagnitude, curve, spin);
+    }
 
-	/**
-	 * @param controlMode Set the control mode of the left and
-	 * right master TalonFXs
-	 
-	public void setControlMode(ControlMode controlMode) {
-		leftMotor2.set(controlMode, 0.0);
-		rightMotor1.set(controlMode, 0.0);
-		
-		// Save control mode so we will know if we have to set it back later
-		m_talonControlMode = controlMode;
-	}
-	
-	/**
-	 * @return The current TalonFXs control mode
-	 
-	public String getTalonControlMode() {
-		if (m_talonControlMode == ControlMode.PercentOutput) {
-			return "PercentVbus";
-		}
-		else if(m_talonControlMode == ControlMode.Position) {
-			return "Position";
-		}
-		else
-			return "Problem";
-	}
-	
-	/**
-	 * Sets the drive control mode
-	 * @param driveMode - values defined in DriveBot
-	 	public void setDriveControlMode(int driveMode) {
-		m_driveMode = driveMode;
-	}
-	
-	/**
-	 * Gets the drive control mode
-	 * @return driveMode - values defined in DriveBot
-	 
-	public int getDriveControlMode() {
-		return m_driveMode;
-	}
-	
-	
-	/**
-	 * Sets the brake mode for ALL WPI_TalonSRXs
-	 * @param setBrake Enable brake mode?
-	 
-	public void setTalonBrakes(boolean setBrake) {
+    /**
+     * @param controlMode Set the control mode of the left and right master WPI_TalonSRXs
+     */
 
-		NeutralMode nm = setBrake ? NeutralMode.Brake : NeutralMode.Coast;
-		
-		rightMotor1.setNeutralMode(nm);
-		rightMotor2.setNeutralMode(nm);
-		rightMotor1.setNeutralMode(nm);
-		rightMotor2.setNeutralMode(nm);
-	
-		
-		SmartDashboard.putBoolean("Talon Brakes", setBrake);
-	}
+    /**
+     * @return The current WPI_TalonSRX control mode
+     */
+    public ControlMode getTalonControlMode()
+    {
+        return m_talonControlMode;
+    }
 
+    /*
+     * Sets the brake mode for ALL WPI_TalonSRXs
+     * 
+     * @param setBrake Enable brake mode?
+     */
+    public void setTalonBrakes(boolean setBrake)
+    {
+
+        NeutralMode nm = setBrake ? NeutralMode.Brake : NeutralMode.Coast;
+
+        leftMotor1.setNeutralMode(nm);
+        leftMotor2.setNeutralMode(nm);
+        rightMotor1.setNeutralMode(nm);
+        rightMotor2.setNeutralMode(nm);
+
+        // On the Shuffleboard, show Red if brakes are set, Green if they are off
+	}
 }
