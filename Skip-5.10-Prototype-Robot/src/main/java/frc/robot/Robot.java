@@ -10,9 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.CD7;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.BallPath;
 
 
 /**
@@ -23,11 +23,11 @@ import frc.robot.subsystems.Shooter;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static BallPath BallPath;
   public static CD7 CD7;
   public static Shooter shooter;
   public static OI m_oi;
   public static Intake intake;
-  public static Drivetrain drivetrain;
   
   /**
    * This function is run when the robot is first started up and should be
