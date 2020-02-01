@@ -29,8 +29,8 @@ public class DriveBot extends Command {
     final double left = speed + curve;
     final double right = -(speed - curve);
     
-    Robot.drivetrain.setRightMotors(left);
-    Robot.drivetrain.setLeftMotors(right);
+    Robot.drivetrain.setRightMotors(right);
+    Robot.drivetrain.setLeftMotors(left);
     
   }
   private double joyXValue1(){
